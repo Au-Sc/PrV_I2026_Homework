@@ -1,0 +1,124 @@
+"""
+ISPPV1 2023
+Study Case: Flappy Bird
+
+Author: Alejandro Mujica
+alejandro.j.mujic4@gmail.com
+
+This file contains the game settings that include the association of the
+inputs with an their ids, constants of values to set up the game, sounds,
+textures, and fonts.
+"""
+
+from pathlib import Path
+
+import pygame
+
+from gale import input_handler
+
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_RETURN, "confirm")
+input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "jump")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_left")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_RIGHT, "move_right")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_UP, "move_up")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_DOWN, "move_down")
+
+
+
+
+TITLE = "Flappy Bird"
+
+# Size of our actual window
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
+
+# Size we are trying to emulate
+VIRTUAL_WIDTH = 512
+VIRTUAL_HEIGHT = 288
+
+BIRD_WIDTH = 39
+BIRD_HEIGHT = 28
+
+GHOST_ORB_WIDTH = 32
+GHOST_ORB_HEIGHT = 32
+
+LOG_WIDTH = 70
+LOG_HEIGHT = 288
+NORMAL_LOGS_GAP = 90
+MIN_LOGS_GAP = 70
+MAX_LOGS_GAP = 115
+CLOSING_LOGS_PERIOD = 4
+
+GROUND_HEIGHT = 16
+
+# Vertical range a log pair's top-log y may take (see World.update). The
+# lower bound keeps a sliver of the top log's edge on screen; the upper
+# bound keeps the full LOGS_GAP opening above the ground -- without it, a
+# pair could spawn so low the top log's bottom edge sits at or past the
+# ground, leaving no passable opening at all.
+
+# The max log Y is no longer taking into account log gap because now
+# The log gap is variable, so it should be taken into account when
+# instantiating the log, using its respective log gap
+
+MIN_LOG_Y = -LOG_HEIGHT + 10
+MAX_LOG_Y = VIRTUAL_HEIGHT - GROUND_HEIGHT - LOG_HEIGHT - 10
+
+BACKGROUND_LOOPING_POINT = 1157
+
+MAIN_SCROLL_SPEED = 100
+BACK_SCROLL_SPEED = 50  # MAIN_SCROLL_SPEED / 2
+
+GRAVITY = 980
+JUMP_TAKEOFF_SPEED = GRAVITY / 6
+
+BIRD_MOVEMENT_SPEED = 70
+POWERUP_DURATION = 10
+
+MIN_TIME_TO_SPAWN_LOGS = 1.5
+MAX_TIME_TO_SPAWN_LOGS = 3
+
+MEDIUM_TEXT_SIZE = 18
+HUGE_TEXT_SIZE = 56
+FLAPPY_TEXT_SIZE = 28
+
+BASE_DIR = Path(__file__).parent
+
+TEXTURES = {
+    "bird": pygame.image.load(BASE_DIR / "assets" / "graphics" / "bird.png"),
+    "ghost_bird": pygame.image.load(BASE_DIR / "assets" / "graphics" / "ghost_bird.png"),
+    "ghost_orb": pygame.image.load(BASE_DIR / "assets" / "graphics" / "ghost_orb.png"),
+    "background": pygame.image.load(BASE_DIR / "assets" / "graphics" / "background.png"),
+    "ground": pygame.image.load(BASE_DIR / "assets" / "graphics" / "ground.png"),
+    "log": pygame.image.load(BASE_DIR / "assets" / "graphics" / "log.png"),
+}
+# The top log of every pair is the same image, flipped upside down.
+TEXTURES["log_inverted"] = pygame.transform.flip(TEXTURES["log"], False, True)
+
+SOUNDS = {
+    "jump": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "jump.wav"),
+    "explosion": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "explosion.wav"),
+    "hurt": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "hurt.wav"),
+    "score": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "score.wav"),
+    "thump": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "log_thump_v4.wav"),
+}
+
+TRACKS = {
+    "normal": BASE_DIR / "assets" / "sounds" / "marios_way.ogg",
+    "wavy": BASE_DIR / "assets" / "sounds" / "marios_way_wavyedit.ogg",
+}
+
+pygame.mixer.music.load(TRACKS["normal"])
+
+FONTS = {
+    "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", MEDIUM_TEXT_SIZE),
+    "huge": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", HUGE_TEXT_SIZE),
+    "flappy": pygame.font.Font(
+        BASE_DIR / "assets" / "fonts" / "flappy.ttf", FLAPPY_TEXT_SIZE
+    ),
+}
+
+COLOR_BACKGROUND = (0, 0, 0)
+COLOR_WHITE = (255, 255, 255)
